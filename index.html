@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Family Accounts VIP - CodiX Edition</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="مصروفي">
+<meta name="theme-color" content="#0b1220">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #10b981;
+            --primary-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --accent-gold: #f59e0b;
+            --bg-gradient: linear-gradient(-45deg, #064e3b, #0f172a, #022c22, #0f172a);
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --card-border: rgba(16, 185, 129, 0.28);
+            --text-color: #f8fafc;
+            --sub-text: #94a3b8;
+            --input-bg: rgba(2, 44, 34, 0.6);
+            --loss-color: #f43f5e;
+            --shadow-glow: 0 10px 35px rgba(16, 185, 129, 0.18);
+        }
+
+        body.light-mode {
+            --bg-gradient: linear-gradient(-45deg, #dcfce7, #e2e8f0, #f0fdf4, #cbd5e1);
+            --card-bg: rgba(255, 255, 255, 0.94);
+            --card-border: rgba(16, 185, 129, 0.35);
+            --text-color: #0f172a;
+            --sub-text: #475569;
+            --input-bg: #ffffff;
+            --shadow-glow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: all 0.25s ease; }
+
+        body, html { 
+            margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden;
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-gradient);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .app-container { 
+            display: flex; flex-direction: column; min-height: 100vh; padding: 16px; 
+            max-width: 520px; margin: 0 auto; gap: 16px;
+        }
+
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
+        .header-info h1 { margin: 0; font-size: 23px; font-weight: 900; color: var(--text-color); letter-spacing: -0.5px; }
+        .header-info p { margin: 2px 0 0; font-size: 11px; color: var(--primary-color); font-weight: 800; }
+        .header-left { display: flex; gap: 8px; align-items: center; }
+        .top-action-btn {
+            background: rgba(16, 185, 129, 0.15); border: 1px solid var(--card-border);
+            width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; font-size: 14px; color: var(--text-color);
+            backdrop-filter: blur(10px); box-shadow: var(--shadow-glow); font-weight: 800;
+        }
+
+        /* Tabs Grid */
+        .nav-tabs { 
+            display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(0,0,0,0.3); padding: 5px; border-radius: 16px; 
+            gap: 4px; border: 1px solid var(--card-border); backdrop-filter: blur(12px);
+        }
+        .nav-tab { 
+            padding: 9px 2px; text-align: center; font-size: 10.5px; font-weight: 800; 
+            border-radius: 12px; cursor: pointer; color: var(--sub-text); border: none; background: transparent; 
+        }
+        .nav-tab.active { 
+            background: var(--primary-gradient); color: white; 
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); 
+        }
+
+        /* Cards */
+        .card { 
+            background: var(--card-bg); backdrop-filter: blur(16px); border-radius: 22px; padding: 20px; 
+            box-shadow: var(--shadow-glow); border: 1px solid var(--card-border);
+        }
+
+        .section-title { 
+            font-size: 14px; font-weight: 800; color: var(--primary-color); margin-bottom: 14px; 
+            display: flex; align-items: center; justify-content: space-between; 
+        }
+
+        /* Top Archive Safe Button */
+        .top-archive-safe-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white; border: none; border-radius: 10px; font-size: 11px; font-weight: 800;
+            padding: 6px 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;
+            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.25);
+        }
+
+        /* Categories Bar */
+        .cat-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 14px; align-items: center; }
+        .add-cat-chip-btn {
+            background: var(--secondary-gradient); color: white; border: none; padding: 8px 14px; border-radius: 14px;
+            font-size: 12px; cursor: pointer; white-space: nowrap; font-weight: 800;
+            box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3); display: flex; align-items: center; gap: 4px;
+        }
+        .cat-chip {
+            background: var(--input-bg); border: 1.5px solid var(--card-border); padding: 8px 16px; border-radius: 14px;
+            font-size: 12px; cursor: pointer; color: var(--sub-text); white-space: nowrap; font-weight: 800;
+        }
+        .cat-chip.active { 
+            background: var(--primary-gradient); color: white; border-color: transparent; 
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .input-group { margin-bottom: 14px; }
+        .input-group label { display: block; margin-bottom: 6px; font-size: 12px; color: var(--sub-text); font-weight: 800; }
+        .input-group input { 
+            width: 100%; padding: 12px 14px; border: 1.5px solid var(--card-border); 
+            border-radius: 14px; font-size: 14px; outline: none; background: var(--input-bg); color: var(--text-color);
+            font-family: 'Cairo', sans-serif; font-weight: 700;
+        }
+        .input-group input:focus { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(16,185,129,0.2); }
+
+        .form-row { display: flex; gap: 10px; }
+
+        .submit-btn { 
+            width: 100%; padding: 14px; background: var(--primary-gradient); 
+            color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 900; cursor: pointer; 
+            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35); margin-top: 4px;
+        }
+
+        .vip-amount {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.5px;
+        }
+
+        .day-group { margin-bottom: 16px; }
+        .day-header { 
+            background: rgba(16, 185, 129, 0.12); color: var(--primary-color); padding: 8px 14px; 
+            border-radius: 12px; font-size: 12px; font-weight: 800; margin-bottom: 8px; 
+            display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--card-border);
+        }
+        .history-item { 
+            background: var(--input-bg); padding: 11px 14px; border-radius: 14px; margin-bottom: 6px; 
+            border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; 
+            font-size: 13px; font-weight: 700;
+        }
+        .badge { font-size: 10px; padding: 3px 8px; border-radius: 6px; font-weight: 800; background: rgba(59, 130, 246, 0.2); color: #60a5fa; margin-left: 6px; }
+        .action-icon { cursor: pointer; color: var(--sub-text); font-size: 14px; margin-right: 8px; font-weight: 900; }
+
+        .summary-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--card-border); font-size: 13px; font-weight: 700; align-items: center; }
+        .grand-total { font-weight: 900; color: var(--primary-color); margin-top: 10px; padding-top: 10px; border-top: 2px solid var(--card-border); font-size: 15px; }
+
+        .archive-card {
+            background: var(--input-bg); border-radius: 16px; padding: 14px; margin-bottom: 12px; border: 1px solid var(--card-border);
+        }
+        .archive-header { display: flex; justify-content: space-between; align-items: center; font-weight: 900; font-size: 14px; color: var(--primary-color); }
+        .archive-details { display: none; margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--card-border); }
+        .archive-toggle-btn { background: rgba(255,255,255,0.08); border: 1px solid var(--card-border); color: var(--text-color); font-size: 11px; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 800; }
+
+        /* Confirmation & General Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(8px);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
+        }
+        .modal-card {
+            background: var(--card-bg); color: var(--text-color); border-radius: 22px; padding: 22px; width: 88%; max-width: 360px;
+            text-align: center; box-shadow: 0 10px 35px rgba(0,0,0,0.5); border: 1px solid var(--card-border);
+        }
+        .modal-icon { font-size: 38px; margin-bottom: 8px; }
+        .modal-title { font-size: 16px; font-weight: 900; color: var(--text-color); margin-bottom: 6px; }
+        .modal-desc { font-size: 12px; color: var(--sub-text); margin-bottom: 16px; line-height: 1.5; }
+        .modal-actions { display: flex; gap: 10px; justify-content: center; }
+        .confirm-btn { flex: 1; padding: 11px; border-radius: 12px; border: none; font-weight: 900; cursor: pointer; background: var(--loss-color); color: white; font-size: 13px; }
+        .cancel-btn { flex: 1; padding: 11px; border-radius: 12px; border: 1px solid var(--card-border); font-weight: 800; cursor: pointer; background: rgba(255,255,255,0.08); color: var(--text-color); font-size: 13px; }
+
+        .toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: rgba(6, 78, 59, 0.95); color: white; padding: 10px 22px; border-radius: 20px;
+            font-size: 13px; font-weight: 800; z-index: 2000; transition: transform 0.3s ease; border: 1px solid var(--primary-color); box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+    <div id="toast" class="toast">تنبيه</div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-info">
+                <h1>Family Accounts VIP</h1>
+                <p>CodiX Edition • إدارة المصاريف العامة</p>
+            </div>
+            <div class="header-left">
+                <div class="top-action-btn" onclick="openDevModal()" title="بصمة المطور">&lt;/&gt;</div>
+                <div class="top-action-btn" id="darkModeBtn" onclick="toggleDarkMode()">☀️</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs Grid -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" id="tabMainBtn" onclick="switchTab('main')">الكشف الحالي 📝</button>
+            <button class="nav-tab" id="tabArchiveBtn" onclick="switchTab('archive')">الأرشيف 📦</button>
+            <button class="nav-tab" id="tabTrashBtn" onclick="switchTab('trash')">السلة 🗑️</button>
+            <button class="nav-tab" id="tabCalcBtn" onclick="switchTab('calc')">الحاسبة 📊</button>
+        </div>
+
+        <!-- TAB 1: MAIN ENTRY -->
+        <div id="tabMain" class="card">
+            <div class="section-title">
+                <span>➕ تسجيل مصروف جديد</span>
+                <button class="top-archive-safe-btn" onclick="triggerArchiveModal()">📦 أرشفة الكشف</button>
+            </div>
+
+            <!-- Categories Bar -->
+            <label style="font-size:12px; color:var(--sub-text); font-weight:800; display:block; margin-bottom:6px;">اختر الخانة / المستفيد (اختياري):</label>
+            <div class="cat-bar">
+                <button class="add-cat-chip-btn" onclick="openCatManager()">➕ إضافة خانة</button>
+                <div id="categoryChipsBar" style="display:flex; gap:8px;"></div>
+            </div>
+
+            <div class="input-group">
+                <label>البيان / الشيء المشترى (يدعم الحسابات مثل: 20+2+4)</label>
+                <input type="text" id="titleInput" placeholder="مثال: حليب / مواصلات / علاج">
+            </div>
+
+            <div class="form-row">
+                <div class="input-group" style="flex:1;">
+                    <label>المبلغ (₪)</label>
+                    <input type="number" id="amountInput" step="0.01" placeholder="0.00">
+                </div>
+                <div class="input-group" style="flex:1;">
+                    <label>التاريخ</label>
+                    <input type="date" id="dateInput">
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="addTransaction()">حفظ المصروف 💾</button>
+        </div>
+
+        <!-- TAB 2: ARCHIVE -->
+        <div id="tabArchive" class="card" style="display:none;">
+            <div class="section-title">📦 أرشيف الكشوفات المسلمة</div>
+            <div id="archiveListContainer"></div>
+        </div>
+
+        <!-- TAB 3: TRASH BIN -->
+        <div id="tabTrash" class="card" style="display:none;">
+            <div class="section-title" style="justify-content:space-between;">
+                <span>🗑️ سلة المحذوفات المؤقتة</span>
+                <span style="font-size:11px; color:var(--loss-color); cursor:pointer; font-weight:800;" onclick="triggerEmptyTrashModal()">تفريغ السلة ✕</span>
+            </div>
+            <div id="trashListContainer"></div>
+        </div>
+
+        <!-- TAB 4: CALCULATOR -->
+        <div id="tabCalc" class="card" style="display:none;">
+            <div class="section-title">📊 حاسبة وتصفية الكشف الحالي حسب الفترة</div>
+            <div class="form-row" style="margin-bottom:14px;">
+                <div class="input-group" style="flex:1; margin-bottom:0;">
+                    <label>من تاريخ</label>
+                    <input type="date" id="startDateFilter" onchange="calculateRangeSummary()">
+                </div>
+                <div class="input-group" style="flex:1; margin-bottom:0;">
+                    <label>إلى تاريخ</label>
+                    <input type="date" id="endDateFilter" onchange="calculateRangeSummary()">
+                </div>
+            </div>
+            <div id="rangeSummaryResults"></div>
+        </div>
+
+        <!-- CURRENT HISTORY -->
+        <div class="card" id="currentHistoryCard">
+            <div class="section-title" style="justify-content:space-between;">
+                <span>📅 تفاصيل الكشف الحالي (حسب الأيام)</span>
+                <span style="font-size:11px; color:var(--loss-color); cursor:pointer; font-weight:800;" onclick="triggerClearAllModal()">مسح الكل 🗑️</span>
+            </div>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div class="modal-overlay" id="catModal">
+        <div class="modal-card">
+            <div class="section-title" style="color:var(--text-color); justify-content:center; margin-bottom:12px;">إضافة وإدارة الخانات</div>
+            <div class="input-group" style="text-align:right;">
+                <label>اسم الخانة الجديدة</label>
+                <input type="text" id="newCatInput" placeholder="مثال: مصروف البيت، شخص 1...">
+            </div>
+            <button class="submit-btn" onclick="addCategory()">إضافة الخانة 🟢</button>
+            <div id="catListModal" style="display:flex; flex-direction:column; gap:6px; margin:14px 0; max-height:150px; overflow-y:auto;"></div>
+            <button class="cancel-btn" style="width:100%;" onclick="closeCatManager()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- Dev Modal -->
+    <div class="modal-overlay" id="devModal">
+        <div class="modal-card">
+            <div style="font-size:18px; font-weight:900; color:var(--primary-color); margin-bottom:10px;">Family Accounts VIP</div>
+            <div style="font-size:13px; color:var(--sub-text); line-height:1.7; font-weight:700;">
+                إصدار CodiX VIP المطور لإدارة المصاريف العامة.<br><br>
+                <span>Developed by:</span>
+                <div style="font-weight:900; color:var(--text-color); margin-top:4px; font-size:14px;">Wesam, Mahmoud & Ahmed</div>
+            </div>
+            <button class="cancel-btn" style="width:100%; margin-top:14px;" onclick="closeDevModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- CodiX Confirmation Modal -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-card">
+            <div class="modal-icon" id="confirmIcon">⚠️</div>
+            <div class="modal-title" id="confirmTitle">تأكيد العملية</div>
+            <div class="modal-desc" id="confirmDesc">هل أنت متأكد من تنفيذ هذا الإجراء؟</div>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeConfirmModal()">إلغاء</button>
+                <button class="confirm-btn" id="confirmActionBtn">تأكيد</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let categories = JSON.parse(localStorage.getItem('family_categories')) || ['مصروف عام'];
+        // Manual beneficiary selection mode: null means no category selected
+        let selectedCategory = null; 
+        let transactions = JSON.parse(localStorage.getItem('family_transactions')) || [];
+        let archives = JSON.parse(localStorage.getItem('family_archives')) || [];
+        let trash = JSON.parse(localStorage.getItem('family_trash')) || [];
+
+        let pendingAction = null;
+
+        function showToast(msg) {
+            let t = document.getElementById('toast');
+            t.innerText = msg; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('light-mode');
+            let isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('familyAccountsLight', isLight);
+            document.getElementById('darkModeBtn').innerText = isLight ? '🌙' : '☀️';
+        }
+
+        if (localStorage.getItem('familyAccountsLight') === 'true') {
+            document.body.classList.add('light-mode');
+            document.getElementById('darkModeBtn').innerText = '🌙';
+        }
+
+        function switchTab(tab) {
+            document.getElementById('tabMain').style.display = tab === 'main' ? 'block' : 'none';
+            document.getElementById('tabArchive').style.display = tab === 'archive' ? 'block' : 'none';
+            document.getElementById('tabTrash').style.display = tab === 'trash' ? 'block' : 'none';
+            document.getElementById('tabCalc').style.display = tab === 'calc' ? 'block' : 'none';
+
+            document.getElementById('currentHistoryCard').style.display = tab === 'main' ? 'block' : 'none';
+
+            document.getElementById('tabMainBtn').className = 'nav-tab' + (tab === 'main' ? ' active' : '');
+            document.getElementById('tabArchiveBtn').className = 'nav-tab' + (tab === 'archive' ? ' active' : '');
+            document.getElementById('tabTrashBtn').className = 'nav-tab' + (tab === 'trash' ? ' active' : '');
+            document.getElementById('tabCalcBtn').className = 'nav-tab' + (tab === 'calc' ? ' active' : '');
+
+            if (tab === 'archive') renderArchives();
+            if (tab === 'trash') renderTrash();
+            if (tab === 'calc') calculateRangeSummary();
+        }
+
+        function openDevModal() { document.getElementById('devModal').style.display = 'flex'; }
+        function closeDevModal() { document.getElementById('devModal').style.display = 'none'; }
+
+        function openCatManager() {
+            document.getElementById('catModal').style.display = 'flex';
+            renderCatModalList();
+        }
+        function closeCatManager() { document.getElementById('catModal').style.display = 'none'; }
+
+        /* CodiX Confirmation Modal System */
+        function showCodiXConfirm(icon, title, desc, onConfirm, btnColor) {
+            document.getElementById('confirmIcon').innerText = icon;
+            document.getElementById('confirmTitle').innerText = title;
+            document.getElementById('confirmDesc').innerText = desc;
+            
+            let actionBtn = document.getElementById('confirmActionBtn');
+            if (btnColor) actionBtn.style.background = btnColor;
+            else actionBtn.style.background = 'var(--loss-color)';
+
+            pendingAction = onConfirm;
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+            pendingAction = null;
+        }
+
+        document.getElementById('confirmActionBtn').onclick = () => {
+            if (pendingAction) pendingAction();
+            closeConfirmModal();
+        };
+
+        /* Categories Bar with Manual Reset */
+        function renderCategoriesBar() {
+            let bar = document.getElementById('categoryChipsBar');
+            bar.innerHTML = '';
+            categories.forEach(cat => {
+                bar.innerHTML += `<div class="cat-chip ${cat === selectedCategory ? 'active' : ''}" onclick="selectCategory('${cat}')">${cat}</div>`;
+            });
+        }
+
+        function selectCategory(cat) {
+            // Toggle selection manually
+            if (selectedCategory === cat) selectedCategory = null;
+            else selectedCategory = cat;
+            renderCategoriesBar();
+        }
+
+        function renderCatModalList() {
+            let list = document.getElementById('catListModal');
+            list.innerHTML = '';
+            categories.forEach((cat, index) => {
+                list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--input-bg); padding:10px 14px; border-radius:12px; font-size:13px; font-weight:800;">
+                    <span>${cat}</span>
+                    ${categories.length > 1 ? `<span style="cursor:pointer; color:var(--loss-color); font-weight:900;" onclick="deleteCategory(${index})">حذف ✕</span>` : ''}
+                </div>`;
+            });
+        }
+
+        function addCategory() {
+            let name = document.getElementById('newCatInput').value.trim();
+            if (!name) return showToast("يرجى إدخال اسم الخانة");
+            if (categories.includes(name)) return showToast("الخانة موجودة مسبقاً");
+            categories.push(name);
+            localStorage.setItem('family_categories', JSON.stringify(categories));
+            document.getElementById('newCatInput').value = '';
+            renderCategoriesBar();
+            renderCatModalList();
+            closeCatManager();
+            showToast("تمت إضافة الخانة بنجاح 🟢");
+        }
+
+        function deleteCategory(index) {
+            if (categories.length <= 1) return showToast("يجب أن تبقى خانة واحدة على الأقل");
+            categories.splice(index, 1);
+            localStorage.setItem('family_categories', JSON.stringify(categories));
+            renderCategoriesBar();
+            renderCatModalList();
+            showToast("تم حذف الخانة");
+        }
+
+        function addTransaction() {
+            let title = document.getElementById('titleInput').value.trim();
+            let amountInputStr = document.getElementById('amountInput').value.trim();
+            let dateVal = document.getElementById('dateInput').value;
+
+            if (!title) return showToast("يرجى إدخال البيان أو الصنف");
+            
+            let amount = 0;
+            try {
+                if (/^[0-9+\-*.()\s]+$/.test(amountInputStr)) {
+                    amount = eval(amountInputStr);
+                } else {
+                    amount = parseFloat(amountInputStr);
+                }
+            } catch(e) {
+                amount = parseFloat(amountInputStr);
+            }
+
+            if (isNaN(amount) || amount <= 0) return showToast("يرجى إدخال مبلغ صحيح");
+
+            let formattedDate = dateVal ? dateVal : new Date().toISOString().split('T')[0];
+
+            let newTx = {
+                id: Date.now(),
+                category: selectedCategory ? selectedCategory : 'عام',
+                title: title,
+                amount: amount,
+                date: formattedDate,
+                time: new Date().toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'})
+            };
+
+            transactions.unshift(newTx);
+            saveAndRender();
+
+            // Clear inputs and reset beneficiary manually to null
+            document.getElementById('titleInput').value = '';
+            document.getElementById('amountInput').value = '';
+            selectedCategory = null; 
+            renderCategoriesBar();
+
+            showToast("تم حفظ المصروف بنجاح 💾");
+        }
+
+        function triggerDeleteTxModal(id) {
+            showCodiXConfirm('🗑️', 'حذف المصروف', 'هل تريد نقل هذا المصروف إلى سلة المحذوفات؟', () => {
+                let item = transactions.find(t => t.id === id);
+                if (item) {
+                    trash.unshift({ type: 'single', data: item, deletedAt: new Date().toLocaleDateString('ar-EG') });
+                    transactions = transactions.filter(t => t.id !== id);
+                    saveAndRender();
+                    saveTrash();
+                    showToast("تم نقل المصروف إلى سلة المحذوفات 🗑️");
+                }
+            });
+        }
+
+        function triggerClearAllModal() {
+            if (transactions.length === 0) return showToast("الكشف فارغ بالفعل");
+            showCodiXConfirm('🗑️', 'مسح الكشف بالكامل', 'هل أنت متأكد من نقل كامل مصاريف الكشف الحالي إلى سلة المحذوفات؟', () => {
+                trash.unshift({ type: 'batch', data: [...transactions], deletedAt: new Date().toLocaleDateString('ar-EG') });
+                transactions = [];
+                saveAndRender();
+                saveTrash();
+                showToast("تم نقل جميع المصاريف للسلة");
+            });
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('family_transactions', JSON.stringify(transactions));
+            renderHistory();
+        }
+
+        function saveTrash() {
+            localStorage.setItem('family_trash', JSON.stringify(trash));
+        }
+
+        /* Archive System with Confirmation & Restore */
+        function triggerArchiveModal() {
+            if (transactions.length === 0) return showToast("لا توجد مصاريف في الكشف الحالي لأرشفتها");
+            showCodiXConfirm('📦', 'أرشفة الكشف وبدء كشف جديد', 'هل تريد إنهاء الفترة الحالية وأرشفة كامل الكشف وتسليمه؟', () => {
+                let firstDate = transactions[transactions.length - 1].date;
+                let lastDate = transactions[0].date;
+
+                let archiveItem = {
+                    id: Date.now(),
+                    title: `كشف من ${firstDate} إلى ${lastDate}`,
+                    dateCreated: new Date().toISOString().split('T')[0],
+                    items: [...transactions]
+                };
+
+                archives.unshift(archiveItem);
+                localStorage.setItem('family_archives', JSON.stringify(archives));
+
+                transactions = [];
+                saveAndRender();
+                showToast("📦 تمت أرشفة الكشف وبدء كشف جديد بنجاح!");
+                switchTab('archive');
+            }, 'var(--primary-gradient)');
+        }
+
+        function restoreArchiveToCurrent(index) {
+            showCodiXConfirm('↩️', 'استرجاع الكشف للمواجهة الحالية', 'هل تريد إلغاء أرشفة هذا الكشف وإعادته للكشف الحالي؟', () => {
+                let arch = archives[index];
+                transactions = [...arch.items, ...transactions];
+                archives.splice(index, 1);
+                localStorage.setItem('family_archives', JSON.stringify(archives));
+                saveAndRender();
+                showToast("تمت إعادة الكشف للواجهة الحالية ↩️");
+                switchTab('main');
+            }, 'var(--secondary-gradient)');
+        }
+
+        function triggerDeleteArchiveModal(index) {
+            showCodiXConfirm('🗑️', 'حذف الكشف المؤرشف', 'هل تريد نقل هذا الكشف المؤرشف إلى سلة المحذوفات؟', () => {
+                let arch = archives[index];
+                trash.unshift({ type: 'archive', data: arch, deletedAt: new Date().toLocaleDateString('ar-EG') });
+                archives.splice(index, 1);
+                localStorage.setItem('family_archives', JSON.stringify(archives));
+                saveTrash();
+                renderArchives();
+                showToast("تم نقل الأرشيف إلى السلة");
+            });
+        }
+
+        function toggleArchiveDetails(id) {
+            let detailsDiv = document.getElementById(`arch-details-${id}`);
+            if (detailsDiv) {
+                detailsDiv.style.display = detailsDiv.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+
+        function renderArchives() {
+            let container = document.getElementById('archiveListContainer');
+            container.innerHTML = '';
+            if (archives.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:var(--sub-text); font-size:12px; padding:20px; font-weight:750;">لا توجد كشوفات مسجلة في الأرشيف بعد</div>';
+                return;
+            }
+
+            archives.forEach((arch, index) => {
+                let total = arch.items.reduce((sum, i) => sum + i.amount, 0);
+                
+                let catSums = {};
+                arch.items.forEach(i => {
+                    catSums[i.category] = (catSums[i.category] || 0) + i.amount;
+                });
+
+                let catSummaryHTML = '';
+                for (let c in catSums) {
+                    catSummaryHTML += `<div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; color:var(--sub-text); font-weight:800;">
+                        <span>${c}:</span> <strong class="vip-amount">₪ ${catSums[c].toFixed(2)}</strong>
+                    </div>`;
+                }
+
+                let groupedItems = {};
+                arch.items.forEach(i => {
+                    if (!groupedItems[i.date]) groupedItems[i.date] = [];
+                    groupedItems[i.date].push(i);
+                });
+
+                let itemsHTML = '';
+                for (let d in groupedItems) {
+                    itemsHTML += `<div style="font-size:12px; font-weight:900; color:var(--primary-color); margin:10px 0 4px;">📅 ${d}</div>`;
+                    groupedItems[d].forEach(item => {
+                        itemsHTML += `
+                            <div style="background:rgba(0,0,0,0.2); padding:8px 10px; border-radius:10px; margin-bottom:4px; font-size:12px; display:flex; justify-content:space-between; align-items:center; font-weight:800;">
+                                <span>${item.title} <span class="badge">${item.category}</span></span>
+                                <span class="vip-amount" style="color:var(--loss-color);">₪ ${item.amount.toFixed(2)}</span>
+                            </div>`;
+                    });
+                }
+
+                container.innerHTML += `
+                    <div class="archive-card">
+                        <div class="archive-header">
+                            <span>📁 ${arch.title}</span>
+                            <span class="vip-amount">₪ ${total.toFixed(2)}</span>
+                        </div>
+                        <div style="font-size:11px; color:var(--sub-text); margin-top:4px; font-weight:750;">تاريخ الأرشفة: ${arch.dateCreated} (${arch.items.length} حركة)</div>
+                        
+                        <div style="display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;">
+                            <button class="archive-toggle-btn" onclick="toggleArchiveDetails(${arch.id})">عرض التفاصيل 👁️</button>
+                            <button class="archive-toggle-btn" style="color:#60a5fa;" onclick="restoreArchiveToCurrent(${index})">استرجاع الكشف ↩️</button>
+                            <button class="archive-toggle-btn" style="color:var(--loss-color);" onclick="triggerDeleteArchiveModal(${index})">حذف 🗑️</button>
+                        </div>
+
+                        <div class="archive-details" id="arch-details-${arch.id}">
+                            <div style="font-size:12px; font-weight:900; color:var(--text-color); margin-bottom:6px; border-bottom:1px dashed var(--card-border); padding-bottom:4px;">ملخص الخانات:</div>
+                            ${catSummaryHTML}
+                            <div style="font-size:12px; font-weight:900; color:var(--text-color); margin:12px 0 6px; border-bottom:1px dashed var(--card-border); padding-bottom:4px;">تفاصيل الحركات:</div>
+                            ${itemsHTML}
+                        </div>
+                    </div>`;
+            });
+        }
+
+        /* Trash Bin Implementation */
+        function renderTrash() {
+            let container = document.getElementById('trashListContainer');
+            container.innerHTML = '';
+            if (trash.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:var(--sub-text); font-size:12px; padding:20px; font-weight:750;">سلة المحذوفات فارغة 🗑️</div>';
+                return;
+            }
+
+            trash.forEach((item, index) => {
+                let label = '';
+                let amountStr = '';
+
+                if (item.type === 'single') {
+                    label = `مصروف: ${item.data.title} (${item.data.category})`;
+                    amountStr = `₪ ${item.data.amount.toFixed(2)}`;
+                } else if (item.type === 'archive') {
+                    label = `أرشيف: ${item.data.title}`;
+                    let sum = item.data.items.reduce((s, i) => s + i.amount, 0);
+                    amountStr = `₪ ${sum.toFixed(2)}`;
+                } else if (item.type === 'batch') {
+                    label = `مجموعة مصاريف كشف كامل (${item.data.length} حركة)`;
+                    let sum = item.data.reduce((s, i) => s + i.amount, 0);
+                    amountStr = `₪ ${sum.toFixed(2)}`;
+                }
+
+                container.innerHTML += `
+                    <div style="background:var(--input-bg); padding:12px; border-radius:14px; margin-bottom:8px; border:1px solid var(--card-border); font-size:12px; font-weight:800;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span>${label}</span>
+                            <span class="vip-amount" style="color:var(--loss-color);">${amountStr}</span>
+                        </div>
+                        <div style="font-size:10px; color:var(--sub-text); margin-top:4px;">تاريخ الحذف: ${item.deletedAt}</div>
+                        <div style="display:flex; gap:8px; margin-top:8px;">
+                            <button class="archive-toggle-btn" style="color:var(--primary-color);" onclick="restoreTrashItem(${index})">استعادة ♻️</button>
+                            <button class="archive-toggle-btn" style="color:var(--loss-color);" onclick="deleteTrashItemPermanently(${index})">حذف نهائي ✕</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function restoreTrashItem(index) {
+            let item = trash[index];
+            if (item.type === 'single') {
+                transactions.unshift(item.data);
+                saveAndRender();
+            } else if (item.type === 'archive') {
+                archives.unshift(item.data);
+                localStorage.setItem('family_archives', JSON.stringify(archives));
+            } else if (item.type === 'batch') {
+                transactions = [...item.data, ...transactions];
+                saveAndRender();
+            }
+            trash.splice(index, 1);
+            saveTrash();
+            renderTrash();
+            showToast("تمت استعادة العنصر بنجاح ♻️");
+        }
+
+        function deleteTrashItemPermanently(index) {
+            trash.splice(index, 1);
+            saveTrash();
+            renderTrash();
+            showToast("تم الحذف بشكل نهائي");
+        }
+
+        function triggerEmptyTrashModal() {
+            if (trash.length === 0) return showToast("السلة فارغة بالفعل");
+            showCodiXConfirm('⚠️', 'تفريغ سلة المحذوفات', 'هل أنت متأكد من تفريغ كافة العناصر في سلة المحذوفات نهائياً؟', () => {
+                trash = [];
+                saveTrash();
+                renderTrash();
+                showToast("تم تفريغ سلة المحذوفات بالكامل");
+            });
+        }
+
+        function calculateRangeSummary() {
+            let start = document.getElementById('startDateFilter').value;
+            let end = document.getElementById('endDateFilter').value;
+            let resultsDiv = document.getElementById('rangeSummaryResults');
+
+            let filtered = transactions.filter(t => {
+                if (start && t.date < start) return false;
+                if (end && t.date > end) return false;
+                return true;
+            });
+
+            let sums = {};
+            categories.forEach(c => sums[c] = 0);
+            let grandTotal = 0;
+
+            filtered.forEach(t => {
+                if (!sums[t.category]) sums[t.category] = 0;
+                sums[t.category] += t.amount;
+                grandTotal += t.amount;
+            });
+
+            let html = '';
+            for (let cat in sums) {
+                html += `<div class="summary-row"><span>${cat}:</span> <strong class="vip-amount">₪ ${sums[cat].toFixed(2)}</strong></div>`;
+            }
+            html += `<div class="summary-row grand-total"><span>المجموع الكلي للفترة:</span> <span class="vip-amount">₪ ${grandTotal.toFixed(2)}</span></div>`;
+            resultsDiv.innerHTML = html;
+        }
+
+        function renderHistory() {
+            let list = document.getElementById('historyList');
+            list.innerHTML = '';
+
+            if (transactions.length === 0) {
+                list.innerHTML = '<div style="text-align:center; color:var(--sub-text); font-size:13px; padding:20px; font-weight:800;">الكشف الحالي فارغ.. جاهز لتسجيل المصاريف</div>';
+                return;
+            }
+
+            let grouped = {};
+            transactions.forEach(t => {
+                if (!grouped[t.date]) grouped[t.date] = [];
+                grouped[t.date].push(t);
+            });
+
+            for (let date in grouped) {
+                let daySum = grouped[date].reduce((sum, item) => sum + item.amount, 0);
+                let dayHTML = `
+                    <div class="day-group">
+                        <div class="day-header">
+                            <span>📅 ${date}</span>
+                            <span class="vip-amount">إجمالي اليوم: ₪ ${daySum.toFixed(2)}</span>
+                        </div>`;
+                
+                grouped[date].forEach(t => {
+                    dayHTML += `
+                        <div class="history-item">
+                            <div>
+                                <strong>${t.title}</strong> 
+                                <span class="badge">${t.category}</span>
+                                <div style="color:var(--sub-text); font-size:11px; margin-top:2px; font-weight:750;">${t.time}</div>
+                            </div>
+                            <div style="display:flex; align-items:center;">
+                                <span class="vip-amount" style="margin-left:8px; color:var(--loss-color);">
+                                    ₪ ${t.amount.toFixed(2)}
+                                </span>
+                                <span class="action-icon" onclick="triggerDeleteTxModal(${t.id})" title="حذف">✕</span>
+                            </div>
+                        </div>`;
+                });
+                dayHTML += `</div>`;
+                list.innerHTML += dayHTML;
+            }
+        }
+
+        window.onload = () => {
+            let today = new Date().toISOString().split('T')[0];
+            document.getElementById('dateInput').value = today;
+            document.getElementById('startDateFilter').value = today;
+            document.getElementById('endDateFilter').value = today;
+            renderCategoriesBar();
+            renderHistory();
+        };
+    </script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+</body>
+</html>
